@@ -9,7 +9,7 @@ load_dotenv()
 # Load the Vosk model
 VOSK_MODEL = os.getenv("VOSK_MODEL")
 dir = os.path.dirname(__file__)
-model_path = os.path.join(dir, f"../model/{VOSK_MODEL}")
+model_path = os.path.join(dir, f"../../model/{VOSK_MODEL}")
 model = vosk.Model(model_path)
 
 # Initialize the recognizer with the model

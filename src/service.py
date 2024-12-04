@@ -1,8 +1,7 @@
-
 import pyaudio
-import speech_to_text
-import text_processor
-import text_to_speech
+import speech.recognition as stt
+import speech.synthesis as tts
+import processor.gpt as gpt
 
 # Initialize microphone stream
 mic = pyaudio.PyAudio()
@@ -12,9 +11,9 @@ stream.start_stream()
 def __main__():
     while True:
         audio_stream = stream.read(4000, exception_on_overflow = False)
-        input_audio_transcribed = speech_to_text.transcribe(audio_stream)
+        input_audio_transcribed = stt.transcribe(audio_stream)
         if input_audio_transcribed:
-            gpt_text_reply = text_processor.reply(input_audio_transcribed)
-            text_to_speech.speak(gpt_text_reply)
+            gpt_text_reply = gpt.reply(input_audio_transcribed)
+            tts.speak(gpt_text_reply)
 
 __main__()
