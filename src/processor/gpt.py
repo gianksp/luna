@@ -2,15 +2,12 @@
 # OPENAI Threads
 from dotenv import load_dotenv
 from openai import OpenAI
-from utils import logger
+from utils import logger, config
 import os
 
 load_dotenv()
 
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
-OPENAI_ASSISTANT_NAME=os.getenv("OPENAI_ASSISTANT_NAME")
-OPENAI_ASSISTANT_INSTRUCTIONS=os.getenv("OPENAI_ASSISTANT_INSTRUCTIONS")
-OPENAI_ASSISTANT_MODEL=os.getenv("OPENAI_ASSISTANT_MODEL")
 
 client=OpenAI(api_key=OPENAI_API_KEY)
 
@@ -22,25 +19,25 @@ def load_assistant():
     global my_assistant
     my_assistants = client.beta.assistants.list(order="desc", limit="20")
     for assistant in my_assistants.data:
-        if assistant.name == OPENAI_ASSISTANT_NAME:
+        if assistant.name == config.get('name'):
             my_assistant = assistant
             break
     # Found?
     if my_assistant:
         my_assistant = client.beta.assistants.update(
             my_assistant.id,
-            instructions=OPENAI_ASSISTANT_INSTRUCTIONS,
-            model=OPENAI_ASSISTANT_MODEL
+            instructions=config.get('instructions'),
+            model=config.get('model')
         )
-        print(f"Assistant ${OPENAI_ASSISTANT_NAME} has been found at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
+        print(f"Assistant ${config.get('name')} has been found at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
     # Not found?
     else:
         my_assistant = client.beta.assistants.create(
-            instructions=OPENAI_ASSISTANT_INSTRUCTIONS,
-            name=OPENAI_ASSISTANT_NAME,
-            model=OPENAI_ASSISTANT_MODEL,
+            instructions=config.get('instructions'),
+            name=config.get('name'),
+            model=config.get('model'),
         )
-        print(f"Assistant ${OPENAI_ASSISTANT_NAME} was created at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
+        print(f"Assistant ${config.get('name')} was created at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
 
 def load_thread():
     # Create new thread on every run
