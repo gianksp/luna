@@ -10,10 +10,10 @@ stream.start_stream()
 
 def __main__():
     while True:
-        audio_stream = stream.read(4000, exception_on_overflow = False)
-        input_audio_transcribed = stt.transcribe(audio_stream)
-        if input_audio_transcribed:
-            gpt_text_reply = gpt.reply(input_audio_transcribed)
+        input_audio_stream = stream.read(4000, exception_on_overflow = False)
+        input_text_transcribed = stt.transcribe(input_audio_stream)
+        if input_text_transcribed:
+            gpt_text_reply = gpt.reply(input_text_transcribed)
             tts.speak(gpt_text_reply)
 
 __main__()

@@ -1,15 +1,12 @@
 # OFFLINE MODE
-import vosk
 import json
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from utils import config
+import vosk
 
 # Load the Vosk model
-VOSK_MODEL = os.getenv("VOSK_MODEL")
 dir = os.path.dirname(__file__)
-model_path = os.path.join(dir, f"../../model/{VOSK_MODEL}")
+model_path = os.path.join(dir, f"../../model/{config.get('speech-to-text-model')}")
 model = vosk.Model(model_path)
 
 # Initialize the recognizer with the model

@@ -1,13 +1,14 @@
+from io import BytesIO
+from utils import config
 from openai import OpenAI
 import pygame
-from io import BytesIO
 
 client = OpenAI()
 
 def speak(text):
     response = client.audio.speech.create(
-        model="tts-1",
-        voice="nova",
+        model=config.get("text-to-speech-model"),
+        voice=config.get("text-to-speech-voice"),
         input=text
     )
 

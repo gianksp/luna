@@ -2,7 +2,7 @@
 # OPENAI Threads
 from dotenv import load_dotenv
 from openai import OpenAI
-from utils import logger, config
+from utils import config
 import os
 
 load_dotenv()
@@ -27,7 +27,7 @@ def load_assistant():
         my_assistant = client.beta.assistants.update(
             my_assistant.id,
             instructions=config.get('instructions'),
-            model=config.get('model')
+            model=config.get('ai-model')
         )
         print(f"Assistant ${config.get('name')} has been found at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
     # Not found?
@@ -35,7 +35,7 @@ def load_assistant():
         my_assistant = client.beta.assistants.create(
             instructions=config.get('instructions'),
             name=config.get('name'),
-            model=config.get('model'),
+            model=config.get('ai-model'),
         )
         print(f"Assistant ${config.get('name')} was created at id: {my_assistant.id}, edit at: https://platform.openai.com/playground/assistants?assistant={my_assistant.id}")
 
